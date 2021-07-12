@@ -2,6 +2,8 @@ provider "aws" {
    region = "us-east-1"
 }
 
+########## AWS SNS ##########
+
  # Alert (with an alert email)
 resource "aws_sns_topic" "topic" {
   name = "email-alert"
@@ -13,6 +15,8 @@ resource "aws_sns_topic_subscription" "email-target" {
   endpoint  = "hibtal@gmail.com"
   endpoint_auto_confirms = true
 }
+
+######### DynamoDB #############
 
 resource "aws_dynamodb_table" "ddbtable" {
   name           = "MyDb"
@@ -143,6 +147,8 @@ resource "aws_iam_role" "readRole" {
 }
 
 
+############   Lambda #############
+
 resource "aws_lambda_function" "writeLambda" {
   filename      = "PutLambdaFunction.zip"
   function_name = "PutLambdaFunction"
@@ -189,6 +195,7 @@ resource "aws_lambda_function" "readLambda" {
 }
 
 
+################ Api Gateway ##################
 
 resource "aws_api_gateway_rest_api" "apiLambda" {
   name        = "myAPI"
