@@ -24,7 +24,7 @@ Now, everything is set and we are ready to begin working in our main project dir
   
   
   
-## Provisioning and deployind the lambda functions  
+## Provisioning and Deploying the lambda functions  
 Now we’ll open the terminal and run 'terraform init'. It will download all the required plugins.  
 Then, we’ll run 'terraform apply -auto-approve'. It will deploy all the resources into AWS cloud, which we can confirm by opening the AWS console in the browser.   
 After running terraform apply -auto-approve command, there will be a URL present in the CLI which will look like the following —  
