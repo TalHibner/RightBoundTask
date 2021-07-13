@@ -21,3 +21,14 @@ Now, everything is set and we are ready to begin working in our main project dir
 ### The AWS CLI installed locally: 
    https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html  
 
+## Limitations
+Terraform currently supports only sqs, sms, lambda, application (fully) and http, https, email and email-json (partially).  
+There is partially support for email and email-json protocols because the endpoint needs to be authorized and does not generate an ARN until the target email address has been validated. This breaks the Terraform model and as a result, is not currently supported.  
+You cannot unsubscribe to a subscription that is pending confirmation. If you use email, email-json, or http/https (without auto-confirmation enabled), until the subscription is confirmed (e.g., outside of Terraform), AWS does not allow Terraform to delete / unsubscribe the subscription. If you destroy an unconfirmed subscription, Terraform will remove the subscription from its state but the subscription will still exist in AWS. However, if you delete an SNS topic, SNS deletes all the subscriptions associated with the topic. Also, you can import a subscription after confirmation and then have the capability to delete it.  
+After running 'terraform apply' you will get an email to the email you subscrubed to:  
+![Screenshot 2021-07-12 012239](https://user-images.githubusercontent.com/9087272/125478374-ae7f204f-5c0e-4dbb-a988-67bca14a5b79.jpg)  
+
+After you clicked the "Confirm subscrition" you will get:  
+![Screenshot 2021-07-12 012250](https://user-images.githubusercontent.com/9087272/125478584-b436b17f-1731-4ce8-bc32-c8cd0afe93ff.jpg) 
+
+And then you are good to go! :-)
