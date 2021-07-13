@@ -1,5 +1,6 @@
 import boto3
 import os
+import json
 
 def publish_error_message(id):
     sns_arn = os.environ['snsARN']  # Getting the SNS Topic ARN passed in by the environment variables.
@@ -23,9 +24,9 @@ def publish_error_message(id):
 def lambda_handler(event, context):
     dynamodb_client = boto3.client('dynamodb')
     # Get an item according to Id (myId)
-    id = event['myId']
+    id = event['queryStringParameters']['myId']
 
-    response = dynamodb_client.query(
+    data = dynamodb_client.query(
         TableName='MyDb',
         KeyConditionExpression='myId = :myId',
         ExpressionAttributeValues={
@@ -34,8 +35,17 @@ def lambda_handler(event, context):
             }
         }
     )
+    response = {
+        'statusCode': 200,
+        'body': json.dumps(data),
+        'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+    }
+
     # Someone asked for an item  that doesn't exist
-    if response["Count"] == 0:
+    if data['Count'] == 0:
         publish_error_message(id)
 
     return response
